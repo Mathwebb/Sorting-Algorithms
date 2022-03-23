@@ -12,31 +12,44 @@ for i in range(10000):
     vet.append(random.randint(0, 99999))
 
 vet1 = vet.copy()
+vet1.sort()
+
+vetB = vet.copy()
 tempo_inicial = time.time()
-print(bubble_sort(vet1))
+bubble_sort(vetB)
+# print(vetB)
 tempo_final = time.time()
 print("tempo bubble sort: ", tempo_final-tempo_inicial, "\n")
+assert vet1, vetB
 
-vet1 = vet.copy()
+vetI = vet.copy()
 tempo_inicial = time.time()
-print(insertion_sort(vet1))
+insertion_sort(vetI)
+# print(vetI)
 tempo_final = time.time()
 print("tempo insertion sort: ", tempo_final-tempo_inicial, "\n")
+assert vet1, vetI
 
-vet1 = vet.copy()
+vetH = vet.copy()
 tempo_inicial = time.time()
-print(heap_sort(vet1))
+heap_sort(vetH)
+# print(vetH)
 tempo_final = time.time()
 print("tempo heap sort: ", tempo_final-tempo_inicial, "\n")
+assert vet1, vetH
 
-vet1 = vet.copy()
+vetM = vet.copy()
 tempo_inicial = time.time()
-print(merge_sort(vet1))
+vet1 = merge_sort(vetM)
+# print(vetM)
 tempo_final = time.time()
 print("tempo merge sort: ", tempo_final-tempo_inicial, "\n")
+assert vet1, vetM
 
-vet1 = vet.copy()
+vetQ = vet.copy()
 tempo_inicial = time.time()
-print(quickSort(vet1, 0, len(vet1)-1))
+quickSort(vet1, 0, len(vetQ)-1)
+# print(vetQ)
 tempo_final = time.time()
 print("tempo quick sort: ", tempo_final-tempo_inicial, "\n")
+assert vet1, vetQ
