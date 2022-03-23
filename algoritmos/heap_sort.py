@@ -44,6 +44,10 @@ def refaz_heap_max(vetor, i):
         vetor[i] = vetor[maior]
         vetor[maior] = temp
         vetor = refaz_heap_max(vetor, maior)
+        if i == 0 and vetor[i] < vetor[i+1]:
+            temp = vetor[i]
+            vetor[i] = vetor[maior]
+            vetor[maior] = temp
     return vetor
 
 
