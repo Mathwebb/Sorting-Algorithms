@@ -168,7 +168,7 @@ def executa_lista_ordenada_inv(tam, arq=None):
     return tempos
 
 
-def executa_algortimos(list_alg, lista_vetores, tam):
+def executa_algoritmos(list_alg, lista_vetores, tam):
     vet_aleat = gera_vetor_aleatorio(tam, 0, tam-1)
     vet_ord = gera_vetor_ordenado(tam)
     vet_inv = gera_vetor_ordenado_inv(tam)
