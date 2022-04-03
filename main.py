@@ -2,45 +2,23 @@ import executa_algoritmos
 from tkinter import *
 from tkinter import ttk
 
-tam_vet = 500
-
-print("Execuções para lista aleatoria:")
-list_aleat = executa_algoritmos.executa_lista_aleatoria(tam_vet, 0, 999)
-print(list_aleat)
-list_aleat = executa_algoritmos.executa_lista_aleatoria(tam_vet, 0, 999)
-print(list_aleat)
-list_aleat = executa_algoritmos.executa_lista_aleatoria(tam_vet, 0, 999)
-print(list_aleat, "\n")
-
-print("Execuções para lista ordenada:")
-list_ord = executa_algoritmos.executa_lista_ordenada(tam_vet)
-print(list_ord)
-list_ord = executa_algoritmos.executa_lista_ordenada(tam_vet)
-print(list_ord)
-list_ord = executa_algoritmos.executa_lista_ordenada(tam_vet)
-print(list_ord, "\n")
-
-print("Execuções para lista inversamente ordenada:")
-list_ord_inv = executa_algoritmos.executa_lista_ordenada_inv(tam_vet)
-print(list_ord_inv)
-list_ord_inv = executa_algoritmos.executa_lista_ordenada_inv(tam_vet)
-print(list_ord_inv)
-list_ord_inv = executa_algoritmos.executa_lista_ordenada_inv(tam_vet)
-print(list_ord_inv, "\n")
-
 
 def mostra():
-    algoritmos = [bubbl_st.get(), inser_st.get(), heap_st.get(), merge_st.get(), quick_st.get()]
+    algoritmos = [bubbl_st.get(), inser_st.get(), heap_st.get(), merge_st.get(), quick_st.get(), hibri_st.get()]
     ordem = [vetor_aleat.get(), vetor_orden.get(), vetor_inver.get()]
     tam = tamanho.get()
     resultado_final = executa_algoritmos.executa_algoritmos(algoritmos, ordem, tam)
-    for (algo, orde, taman, tempo) in resultado_final:
+    for (algo, orde, taman, tempo) in resultado_final[0]:
+        print(tempo)
         tv.insert("", "end", values=(algo, orde, taman, tempo))
+    for comp in resultado_final[1]:
+        pass
+        print(comp)
 
 
 janela = Tk()
 janela.title("Algoritmos de Ordenação")
-janela.geometry("550x500")
+janela.geometry("650x500")
 
 texto = Label(janela, text="Bem Vindo")
 texto.place(x=230, y=5)
@@ -53,6 +31,7 @@ inser_st = StringVar()
 heap_st = StringVar()
 merge_st = StringVar()
 quick_st = StringVar()
+hibri_st = StringVar()
 
 checkbox_bs = Checkbutton(janela, text="Bubble Sort", variable=bubbl_st, onvalue="bubble", offvalue="")
 checkbox_bs.place(x=40, y=40)
@@ -69,6 +48,9 @@ checkbox_ms.deselect()
 checkbox_qs = Checkbutton(janela, text="Quick Sort", variable=quick_st, onvalue="quick", offvalue="")
 checkbox_qs.place(x=440, y=40)
 checkbox_qs.deselect()
+checkbox_qs = Checkbutton(janela, text="Hibrid Sort", variable=hibri_st, onvalue="hibrid", offvalue="")
+checkbox_qs.place(x=540, y=40)
+checkbox_qs.deselect()
 
 texto_algoritmos = Label(janela, text="Tipos de vetor")
 texto_algoritmos.place(x=20, y=70)
@@ -80,10 +62,10 @@ vetor_inver = BooleanVar()
 checkbox_va = Checkbutton(janela, text="Aleatório", variable=vetor_aleat, onvalue=True, offvalue=False)
 checkbox_va.place(x=40, y=90)
 checkbox_va.deselect()
-checkbox_vo = Checkbutton(janela, text="Ordenado", variable=vetor_orden, onvalue=True, offvalue=False)
+checkbox_vo = Checkbutton(janela, text="Crescente", variable=vetor_orden, onvalue=True, offvalue=False)
 checkbox_vo.place(x=140, y=90)
 checkbox_vo.deselect()
-checkbox_vi = Checkbutton(janela, text="Invertido", variable=vetor_inver, onvalue=True, offvalue=False)
+checkbox_vi = Checkbutton(janela, text="Decrescente", variable=vetor_inver, onvalue=True, offvalue=False)
 checkbox_vi.place(x=240, y=90)
 checkbox_vi.deselect()
 
@@ -126,8 +108,5 @@ tv.heading('ordem', text='Ordem do Vetor')
 tv.heading('tamanho', text='Tamanho do Vetor')
 tv.heading('tempo', text='Tempo Gasto')
 tv.place(x=25, y=250)
-
-calculando = Label(janela, text="")
-calculando.place(x=0, y=0)
 
 janela.mainloop()

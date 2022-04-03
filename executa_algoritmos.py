@@ -6,6 +6,7 @@ from algoritmos.insertion_sort import insertion_sort
 from algoritmos.merge_sort import merge_sort
 from algoritmos.heap_sort import heap_sort
 from algoritmos.quick_sort import quickSort
+from algoritmos.hibrido import hibrido
 
 
 def escreve_em_arq(arq, dic, titulo):
@@ -42,37 +43,44 @@ def gera_vetor_ordenado_inv(tam):
 
 def executa_bubble_sort(vetor):
     tempo_inicial = time.perf_counter()
-    bubble_sort(vetor)
+    res = bubble_sort(vetor)
     tempo_final = time.perf_counter()
-    return tempo_final - tempo_inicial
+    return tempo_final - tempo_inicial, res[1]
 
 
 def executa_insertion_sort(vetor):
     tempo_inicial = time.perf_counter()
-    insertion_sort(vetor)
+    res = insertion_sort(vetor)
     tempo_final = time.perf_counter()
-    return tempo_final - tempo_inicial
+    return tempo_final - tempo_inicial, res[1]
 
 
 def executa_heap_sort(vetor):
     tempo_inicial = time.perf_counter()
-    heap_sort(vetor)
+    res = heap_sort(vetor)
     tempo_final = time.perf_counter()
-    return tempo_final - tempo_inicial
+    return tempo_final - tempo_inicial, res[1]
 
 
 def executa_merge_sort(vetor):
     tempo_inicial = time.perf_counter()
-    vetor = merge_sort(vetor)
+    res = merge_sort(vetor)
     tempo_final = time.perf_counter()
-    return tempo_final - tempo_inicial
+    return tempo_final - tempo_inicial, res[1]
 
 
 def executa_quick_sort(vetor):
     tempo_inicial = time.perf_counter()
-    quickSort(vetor)
+    res = quickSort(vetor)
     tempo_final = time.perf_counter()
-    return tempo_final - tempo_inicial
+    return tempo_final - tempo_inicial, res[1]
+
+
+def executa_hibrid_sort(vetor):
+    tempo_inicial = time.perf_counter()
+    res = hibrido(vetor)
+    tempo_final = time.perf_counter()
+    return tempo_final - tempo_inicial, res[1]
 
 
 def executa_lista_aleatoria(tam, lim_inf, lim_sup, arq=None):
@@ -168,127 +176,202 @@ def executa_lista_ordenada_inv(tam, arq=None):
     return tempos
 
 
-def executa_algoritmos(list_alg, lista_vetores, tam):
-    vet_aleat = gera_vetor_aleatorio(tam, 0, tam-1)
+def executa_algoritmos(list_alg, lista_vetores, tam, rep=3):
+    vetores_aleat = []
     vet_ord = gera_vetor_ordenado(tam)
     vet_inv = gera_vetor_ordenado_inv(tam)
     resultados = []
+    comparacoes = []
+
+    for i in range(0, rep):
+        vetores_aleat.append(gera_vetor_aleatorio(tam, 0, tam - 1))
 
     for i in list_alg:
         if i == "bubble":
-            for t in range(0, len(lista_vetores)):
-                if lista_vetores[t] and t == 0:
-                    resultados.append([])
-                    resultados[len(resultados)-1].append("Bubble Sort")
-                    resultados[len(resultados)-1].append(str(tam))
-                    resultados[len(resultados)-1].append("Aleatório")
-                    vet = vet_aleat.copy()
-                    resultados[len(resultados)-1].append(executa_bubble_sort(vet))
-                elif lista_vetores[t] and t == 1:
-                    resultados.append([])
-                    resultados[len(resultados)-1].append("Bubble Sort")
-                    resultados[len(resultados)-1].append(str(tam))
-                    resultados[len(resultados)-1].append("Crescente")
-                    vet = vet_ord.copy()
-                    resultados[len(resultados)-1].append(executa_bubble_sort(vet))
-                elif lista_vetores[t] and t == 2:
-                    resultados.append([])
-                    resultados[len(resultados)-1].append("Bubble Sort")
-                    resultados[len(resultados)-1].append(str(tam))
-                    resultados[len(resultados)-1].append("Decrescente")
-                    vet = vet_inv.copy()
-                    resultados[len(resultados)-1].append(executa_bubble_sort(vet))
+            for k in range(0, rep):
+                vet_aleat = vetores_aleat[k]
+                for t in range(0, len(lista_vetores)):
+                    if lista_vetores[t] and t == 0:
+                        resultados.append([])
+                        resultados[len(resultados)-1].append("Bubble Sort")
+                        resultados[len(resultados)-1].append(str(tam))
+                        resultados[len(resultados)-1].append("Aleatório")
+                        vet = vet_aleat.copy()
+                        resultado = executa_bubble_sort(vet)
+                        comparacoes.append(resultado[1])
+                        resultados[len(resultados)-1].append(resultado[0])
+                    elif lista_vetores[t] and t == 1:
+                        resultados.append([])
+                        resultados[len(resultados)-1].append("Bubble Sort")
+                        resultados[len(resultados)-1].append(str(tam))
+                        resultados[len(resultados)-1].append("Crescente")
+                        vet = vet_ord.copy()
+                        resultado = executa_bubble_sort(vet)
+                        comparacoes.append(resultado[1])
+                        resultados[len(resultados) - 1].append(resultado[0])
+                    elif lista_vetores[t] and t == 2:
+                        resultados.append([])
+                        resultados[len(resultados)-1].append("Bubble Sort")
+                        resultados[len(resultados)-1].append(str(tam))
+                        resultados[len(resultados)-1].append("Decrescente")
+                        vet = vet_inv.copy()
+                        resultado = executa_bubble_sort(vet)
+                        comparacoes.append(resultado[1])
+                        resultados[len(resultados) - 1].append(resultado[0])
         if i == "insertion":
-            for t in range(0, len(lista_vetores)):
-                if lista_vetores[t] and t == 0:
-                    resultados.append([])
-                    resultados[len(resultados)-1].append("Insertion Sort")
-                    resultados[len(resultados)-1].append(str(tam))
-                    resultados[len(resultados)-1].append("Aleatório")
-                    vet = vet_aleat.copy()
-                    resultados[len(resultados)-1].append(executa_insertion_sort(vet))
-                elif lista_vetores[t] and t == 1:
-                    resultados.append([])
-                    resultados[len(resultados)-1].append("Insertion Sort")
-                    resultados[len(resultados)-1].append(str(tam))
-                    resultados[len(resultados)-1].append("Crescente")
-                    vet = vet_ord.copy()
-                    resultados[len(resultados)-1].append(executa_insertion_sort(vet))
-                elif lista_vetores[t] and t == 2:
-                    resultados.append([])
-                    resultados[len(resultados)-1].append("Insertion Sort")
-                    resultados[len(resultados)-1].append(str(tam))
-                    resultados[len(resultados)-1].append("Decrescente")
-                    vet = vet_inv.copy()
-                    resultados[len(resultados)-1].append(executa_insertion_sort(vet))
+            for k in range(0, rep):
+                vet_aleat = vetores_aleat[k]
+                for t in range(0, len(lista_vetores)):
+                    if lista_vetores[t] and t == 0:
+                        resultados.append([])
+                        resultados[len(resultados)-1].append("Insertion Sort")
+                        resultados[len(resultados)-1].append(str(tam))
+                        resultados[len(resultados)-1].append("Aleatório")
+                        vet = vet_aleat.copy()
+                        resultado = executa_insertion_sort(vet)
+                        comparacoes.append(resultado[1])
+                        resultados[len(resultados)-1].append(resultado[0])
+                    elif lista_vetores[t] and t == 1:
+                        resultados.append([])
+                        resultados[len(resultados)-1].append("Insertion Sort")
+                        resultados[len(resultados)-1].append(str(tam))
+                        resultados[len(resultados)-1].append("Crescente")
+                        vet = vet_ord.copy()
+                        resultado = executa_insertion_sort(vet)
+                        comparacoes.append(resultado[1])
+                        resultados[len(resultados) - 1].append(resultado[0])
+                    elif lista_vetores[t] and t == 2:
+                        resultados.append([])
+                        resultados[len(resultados)-1].append("Insertion Sort")
+                        resultados[len(resultados)-1].append(str(tam))
+                        resultados[len(resultados)-1].append("Decrescente")
+                        vet = vet_inv.copy()
+                        resultado = executa_insertion_sort(vet)
+                        comparacoes.append(resultado[1])
+                        resultados[len(resultados) - 1].append(resultado[0])
         if i == "heap":
-            for t in range(0, len(lista_vetores)):
-                if lista_vetores[t] and t == 0:
-                    resultados.append([])
-                    resultados[len(resultados)-1].append("Heap Sort")
-                    resultados[len(resultados)-1].append(str(tam))
-                    resultados[len(resultados)-1].append("Aleatório")
-                    vet = vet_aleat.copy()
-                    resultados[len(resultados)-1].append(executa_heap_sort(vet))
-                elif lista_vetores[t] and t == 1:
-                    resultados.append([])
-                    resultados[len(resultados)-1].append("Heap Sort")
-                    resultados[len(resultados)-1].append(str(tam))
-                    resultados[len(resultados)-1].append("Crescente")
-                    vet = vet_ord.copy()
-                    resultados[len(resultados)-1].append(executa_heap_sort(vet))
-                elif lista_vetores[t] and t == 2:
-                    resultados.append([])
-                    resultados[len(resultados)-1].append("Heap Sort")
-                    resultados[len(resultados)-1].append(str(tam))
-                    resultados[len(resultados)-1].append("Decrescente")
-                    vet = vet_inv.copy()
-                    resultados[len(resultados)-1].append(executa_heap_sort(vet))
+            for k in range(0, rep):
+                vet_aleat = vetores_aleat[k]
+                for t in range(0, len(lista_vetores)):
+                    if lista_vetores[t] and t == 0:
+                        resultados.append([])
+                        resultados[len(resultados)-1].append("Heap Sort")
+                        resultados[len(resultados)-1].append(str(tam))
+                        resultados[len(resultados)-1].append("Aleatório")
+                        vet = vet_aleat.copy()
+                        resultado = executa_heap_sort(vet)
+                        comparacoes.append(resultado[1])
+                        resultados[len(resultados) - 1].append(resultado[0])
+                    elif lista_vetores[t] and t == 1:
+                        resultados.append([])
+                        resultados[len(resultados)-1].append("Heap Sort")
+                        resultados[len(resultados)-1].append(str(tam))
+                        resultados[len(resultados)-1].append("Crescente")
+                        vet = vet_ord.copy()
+                        resultado = executa_heap_sort(vet)
+                        comparacoes.append(resultado[1])
+                        resultados[len(resultados) - 1].append(resultado[0])
+                    elif lista_vetores[t] and t == 2:
+                        resultados.append([])
+                        resultados[len(resultados)-1].append("Heap Sort")
+                        resultados[len(resultados)-1].append(str(tam))
+                        resultados[len(resultados)-1].append("Decrescente")
+                        vet = vet_inv.copy()
+                        resultado = executa_heap_sort(vet)
+                        comparacoes.append(resultado[1])
+                        resultados[len(resultados) - 1].append(resultado[0])
         if i == "merge":
-            for t in range(0, len(lista_vetores)):
-                if lista_vetores[t] and t == 0:
-                    resultados.append([])
-                    resultados[len(resultados)-1].append("Merge Sort")
-                    resultados[len(resultados)-1].append(str(tam))
-                    resultados[len(resultados)-1].append("Aleatório")
-                    vet = vet_aleat.copy()
-                    resultados[len(resultados)-1].append(executa_merge_sort(vet))
-                elif lista_vetores[t] and t == 1:
-                    resultados.append([])
-                    resultados[len(resultados)-1].append("Merge Sort")
-                    resultados[len(resultados)-1].append(str(tam))
-                    resultados[len(resultados)-1].append("Crescente")
-                    vet = vet_ord.copy()
-                    resultados[len(resultados)-1].append(executa_merge_sort(vet))
-                elif lista_vetores[t] and t == 2:
-                    resultados.append([])
-                    resultados[len(resultados)-1].append("Merge Sort")
-                    resultados[len(resultados)-1].append(str(tam))
-                    resultados[len(resultados)-1].append("Decrescente")
-                    vet = vet_inv.copy()
-                    resultados[len(resultados)-1].append(executa_merge_sort(vet))
+            for k in range(0, rep):
+                vet_aleat = vetores_aleat[k]
+                for t in range(0, len(lista_vetores)):
+                    if lista_vetores[t] and t == 0:
+                        resultados.append([])
+                        resultados[len(resultados)-1].append("Merge Sort")
+                        resultados[len(resultados)-1].append(str(tam))
+                        resultados[len(resultados)-1].append("Aleatório")
+                        vet = vet_aleat.copy()
+                        resultado = executa_merge_sort(vet)
+                        comparacoes.append(resultado[1])
+                        resultados[len(resultados) - 1].append(resultado[0])
+                    elif lista_vetores[t] and t == 1:
+                        resultados.append([])
+                        resultados[len(resultados)-1].append("Merge Sort")
+                        resultados[len(resultados)-1].append(str(tam))
+                        resultados[len(resultados)-1].append("Crescente")
+                        vet = vet_ord.copy()
+                        resultado = executa_merge_sort(vet)
+                        comparacoes.append(resultado[1])
+                        resultados[len(resultados) - 1].append(resultado[0])
+                    elif lista_vetores[t] and t == 2:
+                        resultados.append([])
+                        resultados[len(resultados)-1].append("Merge Sort")
+                        resultados[len(resultados)-1].append(str(tam))
+                        resultados[len(resultados)-1].append("Decrescente")
+                        vet = vet_inv.copy()
+                        resultado = executa_merge_sort(vet)
+                        comparacoes.append(resultado[1])
+                        resultados[len(resultados) - 1].append(resultado[0])
         if i == "quick":
-            for t in range(0, len(lista_vetores)):
-                if lista_vetores[t] and t == 0:
-                    resultados.append([])
-                    resultados[len(resultados)-1].append("Quick Sort")
-                    resultados[len(resultados)-1].append(str(tam))
-                    resultados[len(resultados)-1].append("Aleatório")
-                    vet = vet_aleat.copy()
-                    resultados[len(resultados)-1].append(executa_quick_sort(vet))
-                elif lista_vetores[t] and t == 1:
-                    resultados.append([])
-                    resultados[len(resultados)-1].append("Quick Sort")
-                    resultados[len(resultados)-1].append(str(tam))
-                    resultados[len(resultados)-1].append("Crescente")
-                    vet = vet_ord.copy()
-                    resultados[len(resultados)-1].append(executa_quick_sort(vet))
-                elif lista_vetores[t] and t == 2:
-                    resultados.append([])
-                    resultados[len(resultados)-1].append("Quick Sort")
-                    resultados[len(resultados)-1].append(str(tam))
-                    resultados[len(resultados)-1].append("Decrescente")
-                    vet = vet_inv.copy()
-                    resultados[len(resultados)-1].append(executa_quick_sort(vet))
+            for k in range(0, rep):
+                vet_aleat = vetores_aleat[k]
+                for t in range(0, len(lista_vetores)):
+                    if lista_vetores[t] and t == 0:
+                        resultados.append([])
+                        resultados[len(resultados)-1].append("Quick Sort")
+                        resultados[len(resultados)-1].append(str(tam))
+                        resultados[len(resultados)-1].append("Aleatório")
+                        vet = vet_aleat.copy()
+                        resultado = executa_quick_sort(vet)
+                        comparacoes.append(resultado[1])
+                        resultados[len(resultados) - 1].append(resultado[0])
+                    elif lista_vetores[t] and t == 1:
+                        resultados.append([])
+                        resultados[len(resultados)-1].append("Quick Sort")
+                        resultados[len(resultados)-1].append(str(tam))
+                        resultados[len(resultados)-1].append("Crescente")
+                        vet = vet_ord.copy()
+                        resultado = executa_quick_sort(vet)
+                        comparacoes.append(resultado[1])
+                        resultados[len(resultados) - 1].append(resultado[0])
+                    elif lista_vetores[t] and t == 2:
+                        resultados.append([])
+                        resultados[len(resultados)-1].append("Quick Sort")
+                        resultados[len(resultados)-1].append(str(tam))
+                        resultados[len(resultados)-1].append("Decrescente")
+                        vet = vet_inv.copy()
+                        resultado = executa_quick_sort(vet)
+                        comparacoes.append(resultado[1])
+                        resultados[len(resultados) - 1].append(resultado[0])
+        if i == "hibrid":
+            for k in range(0, rep):
+                vet_aleat = vetores_aleat[k]
+                for t in range(0, len(lista_vetores)):
+                    if lista_vetores[t] and t == 0:
+                        resultados.append([])
+                        resultados[len(resultados)-1].append("Hibrid Sort")
+                        resultados[len(resultados)-1].append(str(tam))
+                        resultados[len(resultados)-1].append("Aleatório")
+                        vet = vet_aleat.copy()
+                        resultado = executa_hibrid_sort(vet)
+                        comparacoes.append(resultado[1])
+                        resultados[len(resultados) - 1].append(resultado[0])
+                    elif lista_vetores[t] and t == 1:
+                        resultados.append([])
+                        resultados[len(resultados)-1].append("Hibrid Sort")
+                        resultados[len(resultados)-1].append(str(tam))
+                        resultados[len(resultados)-1].append("Crescente")
+                        vet = vet_ord.copy()
+                        resultado = executa_hibrid_sort(vet)
+                        comparacoes.append(resultado[1])
+                        resultados[len(resultados) - 1].append(resultado[0])
+                    elif lista_vetores[t] and t == 2:
+                        resultados.append([])
+                        resultados[len(resultados)-1].append("Hibrid Sort")
+                        resultados[len(resultados)-1].append(str(tam))
+                        resultados[len(resultados)-1].append("Decrescente")
+                        vet = vet_inv.copy()
+                        resultado = executa_hibrid_sort(vet)
+                        comparacoes.append(resultado[1])
+                        resultados[len(resultados) - 1].append(resultado[0])
 
-    return resultados
+    return resultados, comparacoes
